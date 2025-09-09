@@ -1,0 +1,16 @@
+[
+  {
+    "title": "AI for IoT",
+    "author": "Ana G.",
+    "year": 2025,
+    "magazin": "IEEE Sensors",
+    "link": "https://example.com/project1"
+  },
+  {
+    "title": "Smart Cities",
+    "author": "Carlos R.",
+    "year": 2024,
+    "magazin": "Urban Computing",
+    "link": "https://example.com/project2"
+  }
+]

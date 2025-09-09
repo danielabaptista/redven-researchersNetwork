@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Investigadores Venezolanos en el Mundo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Investigadores Venezolanos en el Mundo</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#" id="projectsBtn">Proyectos</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#" id="opportunitiesBtn">Oportunidades</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#" id="aboutUsBtn">Sobre nosotros</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Map and Metrics -->
+<div class="container mt-4 d-flex">
+  <!-- Left metrics panel -->
+  <div id="metrics-left" class="me-3" style="width: 250px;">
+    <div class="card p-2 mb-2" id="totalResearchersCard">
+      <h6>Total Investigadores</h6>
+      <span id="totalResearchers">0</span>
+    </div>
+
+    <div class="card p-2 mb-2">
+      <h6>Por rol</h6>
+      <div id="rolesMetrics" class="d-flex flex-wrap gap-3"></div>
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div id="map" style="flex:1;"></div>
+</div>
+
+<!-- Projects Modal -->
+<div class="modal fade" id="projectsModal" tabindex="-1" aria-labelledby="projectsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="projectsModalLabel">Proyectos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="projectsModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Opportunities Modal -->
+<div class="modal fade" id="opportunitiesModal" tabindex="-1" aria-labelledby="opportunitiesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="opportunitiesModalLabel">Oportunidades</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="opportunitiesModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- About Us Modal -->
+<div class="modal fade" id="aboutUsModal" tabindex="-1" aria-labelledby="aboutUsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aboutUsModalLabel">Sobre Nosotros</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Somos una comunidad de investigadores venezolanos en todo el mundo. 
+          Nuestro objetivo es conectar, colaborar y compartir oportunidades para fortalecer 
+          la investigación y la innovación.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+<script>
+  // Initialize map
+  const map = L.map('map', { minZoom: 2 }).setView([20,0], 2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 19,
+    noWrap: true
+  }).addTo(map);
+
+  map.setMaxBounds([[-60,-170],[80,170]]);
+
+  // Define role icons
+  const roleIcons = {
+    "maestría": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "doctorado": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "postdoc": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "profesor": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "investigador": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "otros": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    })
+  };
+
+  // Helper to capitalize first letter
+  function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  // Render roles as circles
+  function renderRoleCircles(counts, total) {
+    const roleColors = {
+      "maestría": "#2AAD27",   // green
+      "doctorado": "#2A81CB",  // blue
+      "postdoc": "#9C2BCB",    // violet
+      "profesor": "#CB2B3E",   // red
+      "investigador": "#CB8427", // orange
+      "otros": "#7B7B7B"       // grey
+    };
+
+    let html = "";
+    for (const [role, count] of Object.entries(counts)) {
+      const percent = (count / total) * 100;
+      const color = roleColors[role] || "#007bff";
+      html += `
+        <div class="role-circle">
+          <svg width="60" height="60">
+            <circle cx="30" cy="30" r="28" stroke="#ddd" stroke-width="4" fill="none" />
+            <circle cx="30" cy="30" r="28" stroke="${color}" stroke-width="4" fill="none"
+                    stroke-dasharray="${2 * Math.PI * 28}"
+                    stroke-dashoffset="${2 * Math.PI * 28 * (1 - percent/100)}"
+                    stroke-linecap="round" transform="rotate(-90 30 30)" />
+            <text x="30" y="35" text-anchor="middle" font-size="14" fill="#000">${count}</text>
+          </svg>
+          <div class="role-label">${capitalizeFirst(role)}</div>
+        </div>
+      `;
+    }
+    document.getElementById("rolesMetrics").innerHTML = html;
+  }
+
+  // Load researchers
+  fetch("data/researchers.json")
+    .then(res => res.json())
+    .then(data => {
+      const markers = L.markerClusterGroup();
+      document.getElementById("totalResearchers").innerText = data.length;
+
+      const rolesCount = {};
+
+      data.forEach(r => {
+        const role = r.role ? r.role.toLowerCase() : "otros";
+        const icon = roleIcons[role] || roleIcons["otros"];
+
+        const marker = L.marker([r.lat, r.lon], { icon: icon })
+          .bindPopup(`<b>${r.name}</b><br>${r.city}<br>${r.role}<br><a href="mailto:${r.email}">${r.email}</a>`);
+
+        markers.addLayer(marker);
+
+        rolesCount[role] = (rolesCount[role] || 0) + 1;
+      });
+
+      map.addLayer(markers);
+
+      // Render the roles as circles
+      renderRoleCircles(rolesCount, data.length);
+    });
+
+  // Load projects
+  fetch("data/projects.json")
+    .then(res => res.json())
+    .then(data => {
+      const projectsModalBody = document.getElementById("projectsModalBody");
+      data.forEach(p => {
+        projectsModalBody.innerHTML += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">${p.title}</h5>
+              <p><b>Autor:</b> ${p.author}</p>
+              <p><b>Año:</b> ${p.year}</p>
+              <p><b>Revista:</b> ${p.magazin}</p>
+              <p><b>Link:</b> <a href="${p.link}" target="_blank">${p.link}</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+  // Load opportunities
+  fetch("data/opportunities.json")
+    .then(res => res.json())
+    .then(data => {
+      const opportunitiesModalBody = document.getElementById("opportunitiesModalBody");
+      data.forEach(o => {
+        opportunitiesModalBody.innerHTML += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">${o.title}</h5>
+              <p><b>Nivel:</b> ${o.level}</p>
+              <p><b>Tema:</b> ${o.topic}</p>
+              <p><b>Ciudad:</b> ${o.city}</p>
+              <p><b>Link:</b> <a href="${o.link}" target="_blank">${o.link}</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+  // Open modals on navbar click
+  document.getElementById("projectsBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("projectsModal")).show();
+  });
+  document.getElementById("opportunitiesBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("opportunitiesModal")).show();
+  });
+  document.getElementById("aboutUsBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("aboutUsModal")).show();
+  });
+</script>
+
+<footer class="bg-dark text-white mt-4 p-3 text-center">
+  &copy; 2025 Investigadores Venezolanos en el Mundo | Contact: <a href="mailto:info@example.com" class="text-white">info@example.com</a>
+</footer>
+
+</body>
+</html>

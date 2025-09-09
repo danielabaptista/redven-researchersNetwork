@@ -1,0 +1,77 @@
+
+      #map {
+        width: 100%;
+        max-width: 1000px;
+        height: 40vw;        
+        margin: 0 auto;      
+      }
+      .modal .card {
+        margin-bottom: 0.5rem;  
+      }
+
+      .modal .card-body {
+        padding: 0.5rem 0.75rem;
+      }
+
+      .modal .card-body p {
+        margin: 0.25rem 0;       
+        font-size: 0.9rem;       
+      }
+
+      .modal .card-title {
+        margin-bottom: 0.3rem;   
+        font-size: 1rem;         
+      }
+
+      .legend {
+        background: white;
+        padding: 6px 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 6px rgba(0,0,0,0.3);
+        font-size: 10px;
+      }
+      .legend h6 {
+        margin: 0 0 4px 0;
+        font-weight: bold;
+        font-size: 10px;
+      }
+    .role-circle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 60px;
+      margin: 5px;
+    }
+
+    .role-label {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    #rolesMetrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      align-items: center;    
+    }
+    #totalResearchersCard {
+      display: flex;
+      flex-direction: column;
+      justify-content: center; 
+      align-items: center;      
+      font-size: 1.5rem;        
+      font-weight: bold;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #totalResearchersLabel {
+      font-size: 1rem;        
+      margin-bottom: 5px;
+    }
+
+
+
+
