@@ -25,3 +25,21 @@ This web application is being developed on request for a third party, with the p
 
 <h4>Status:</h4>
 Project in progress. The app will be updated regularly with new features and improved functionality.
+
+![Map showing researchers](images/1.redVen.png)
+
+<h2>Data Preparation</h2>
+
+The repository includes a Python script dataPrep/DataPrep.py that processes researcher data from CSV files and generates the JSON files used by the web application. This allows the app to dynamically visualize the data on the map.
+
+The `dataprep.py` script prepares the input data for the web app. It reads researcher information from a CSV file containing:
+
+- `name and last name`  
+- `city and country`    
+- `role`  
+- `email`  
+
+The script then calculates the geolocation (latitude and longitude) for each researcher, which is required for placing markers on the map. Finally, it outputs a JSON file used as the input for the web app.
+
+To use: python dataPrep.py [CSV-file-name].csv
+
