@@ -25,6 +25,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="#" id="projectsBtn">Proyectos</a></li>
         <li class="nav-item"><a class="nav-link active" href="#" id="opportunitiesBtn">Oportunidades</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#" id="coursesBtn">Cursos</a></li>
         <li class="nav-item"><a class="nav-link active" href="#" id="aboutUsBtn">Sobre nosotros</a></li>
       </ul>
     </div>
@@ -75,6 +76,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body" id="opportunitiesModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Courses Modal -->
+<div class="modal fade" id="coursesModal" tabindex="-1" aria-labelledby="coursesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="coursesModalLabel">Cursos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="coursesModalBody"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
@@ -147,7 +164,7 @@
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
       iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
     }),
-    "otros": new L.Icon({
+    "otro": new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
       iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
@@ -167,7 +184,7 @@
       "postdoc": "#9C2BCB",    // violet
       "profesor": "#CB2B3E",   // red
       "investigador": "#CB8427", // orange
-      "otros": "#7B7B7B"       // grey
+      "otro": "#7B7B7B"       // grey
     };
 
     let html = "";
@@ -258,6 +275,25 @@
       });
     });
 
+  // Load courses
+  fetch("data/courses.json")
+    .then(res => res.json())
+    .then(data => {
+      const opportunitiesModalBody = document.getElementById("coursesModalBody");
+      data.forEach(o => {
+        coursesModalBody.innerHTML += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">${o.title}</h5>
+              <p><b>Fecha:</b> ${o.date}</p>
+              <p><b>Hora:</b> ${o.time}</p>
+              <p><b>Link:</b> <a href="${o.link}" target="_blank">${o.link}</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+
   // Open modals on navbar click
   document.getElementById("projectsBtn").addEventListener("click", () => {
     new bootstrap.Modal(document.getElementById("projectsModal")).show();
@@ -265,9 +301,13 @@
   document.getElementById("opportunitiesBtn").addEventListener("click", () => {
     new bootstrap.Modal(document.getElementById("opportunitiesModal")).show();
   });
+    document.getElementById("coursesBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("coursesModal")).show();
+  });
   document.getElementById("aboutUsBtn").addEventListener("click", () => {
     new bootstrap.Modal(document.getElementById("aboutUsModal")).show();
   });
+
 </script>
 
 <footer class="bg-dark text-white mt-4 p-3 text-center">

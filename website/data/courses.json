@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Curso 1",
+    "date": "10/02/25",
+    "time": "17:00 - 19:00",
+    "link": "https://example.com/course1"
+  },
+  {
+    "title": "Curso 2",
+    "date": "10/03/25",
+    "time": "17:00 - 19:00",
+    "link": "https://example.com/course2"
+  }
+]
