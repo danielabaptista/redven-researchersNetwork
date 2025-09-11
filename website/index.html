@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
 
   <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.min.js"></script>
 </head>
 <body>
 
@@ -27,15 +28,16 @@
         <li class="nav-item"><a class="nav-link active" href="#" id="opportunitiesBtn">Oportunidades</a></li>
         <li class="nav-item"><a class="nav-link active" href="#" id="coursesBtn">Cursos</a></li>
         <li class="nav-item"><a class="nav-link active" href="#" id="aboutUsBtn">Sobre nosotros</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#" id="registrationBtn">¿Quieres sumarte?</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
 <!-- Map and Metrics -->
-<div class="container mt-4 d-flex">
+<div class="d-flex" style="margin: 15px 10px;">
   <!-- Left metrics panel -->
-  <div id="metrics-left" class="me-3" style="width: 250px;">
+  <div id="metrics-left" class="me-2" style="width: 250px;">
     <div class="card p-2 mb-2" id="totalResearchersCard">
       <h6>Total Investigadores</h6>
       <span id="totalResearchers">0</span>
@@ -43,13 +45,48 @@
 
     <div class="card p-2 mb-2">
       <h6>Por rol</h6>
-      <div id="rolesMetrics" class="d-flex flex-wrap gap-3"></div>
+      <div id="rolesMetrics" class="d-flex flex-wrap gap-3 justify-content-center"></div>
     </div>
   </div>
 
   <!-- Map -->
-  <div id="map" style="flex:1;"></div>
+  <div id="map" style="flex:1; min-height: 600px;"></div>
+
+<!-- Right metrics panel -->
+ <div id="metrics-right" class="ms-2 d-flex flex-column gap-3" style="width: 250px;">
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Impacto en la Comunidad</h6>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Mentores</h6>
+    <p id="mentorships" class="fs-4 fw-bold counter mb-0">0</p>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Estudiantes Mentorados</h6>
+    <p id="studentsMentored" class="fs-4 fw-bold counter mb-0">0</p>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Papers Compartidos</h6>
+    <p id="papersShared" class="fs-4 fw-bold counter mb-0">0</p>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Donaciones Recibidas</h6>
+    <p id="donations" class="fs-4 fw-bold counter mb-0">0</p>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#donationsModal" class="small">
+      ¿Cómo usamos estas donaciones?
+    </a>
+  </div>
+
 </div>
+
+</div>
+
+
 
 <!-- Projects Modal -->
 <div class="modal fade" id="projectsModal" tabindex="-1" aria-labelledby="projectsModalLabel" aria-hidden="true">
@@ -120,6 +157,67 @@
     </div>
   </div>
 </div>
+
+<!-- Donations Modal -->
+<div class="modal fade" id="donationsModal" tabindex="-1" aria-labelledby="donationsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="donationsModalLabel">Uso de las Donaciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Las donaciones recibidas se utilizan para apoyar el crecimiento de la comunidad de investigadores venezolanos en el exterior.</p>
+        <ul>
+          <li><b>Becas y mentorías:</b> apoyar a estudiantes con acceso a recursos y orientación.</li>
+          <li><b>Eventos y talleres:</b> organización de actividades de networking y capacitación.</li>
+        </ul>
+        <p>Tu contribución ayuda a mantener vivo este proyecto y a fortalecer la red de investigadores venezolanos.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Registration Modal (google forms links) -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registrationModalLabel">Participa en la Comunidad</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-flex flex-column gap-3">
+        <p class="mb-4">
+          Ayúdanos a recolectar información para fortalecer la comunidad.  
+          Rellena el formulario según tu caso:
+        </p>
+        <a href="YOUR_REGISTRATION_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Quieres registrarte en la comunidad y que tu información aparezca en el mapa?
+        </a>
+        <a href="YOUR_MENTORSHIP_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Estás dando mentoría a alguien de la comunidad?
+        </a>
+        <a href="YOUR_STUDENT_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Estás recibiendo mentoría de alguien de la comunidad?
+        </a>
+        <a href="YOUR_PAPER_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Has compatidos un paper con la comunidad?
+        </a>
+        <a href="YOUR_DONATION_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Quieres apoyar con una donación? <br>
+        </a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -294,6 +392,19 @@
       });
     });
 
+  // Load community impact data
+  fetch("data/community.json")
+    .then(res => res.json())
+    .then(data => {
+      // Assuming your JSON looks like:
+      // { "mentorships": 12, "papers": 34, "donations": 1500 }
+
+      document.getElementById("mentorships").innerText = data.mentorships;
+      document.getElementById("studentsMentored").innerText = data.students_mentored;
+      document.getElementById("papersShared").innerText = data.papers_shared;
+      document.getElementById("donations").innerText = `$${data.donations.toLocaleString()}`;
+  });
+
   // Open modals on navbar click
   document.getElementById("projectsBtn").addEventListener("click", () => {
     new bootstrap.Modal(document.getElementById("projectsModal")).show();
@@ -306,6 +417,9 @@
   });
   document.getElementById("aboutUsBtn").addEventListener("click", () => {
     new bootstrap.Modal(document.getElementById("aboutUsModal")).show();
+  });
+    document.getElementById("registrationBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("registrationModal")).show();
   });
 
 </script>

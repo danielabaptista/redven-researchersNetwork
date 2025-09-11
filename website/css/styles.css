@@ -71,6 +71,35 @@
       font-size: 1rem;        
       margin-bottom: 5px;
     }
+    .btn-community {
+      background-color: #1565C0;   
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;         
+      justify-content: center;   
+      width: 100%;
+      padding: 12px 10px;       
+      border: none;
+      border-radius: 6px;
+      line-height: 1.2;            
+      white-space: normal;         
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      min-height: 60px; 
+
+    }
+
+    .btn-community:hover {
+      background-color: #0D47A1;
+      text-decoration: none;
+      color: white;
+    }
+
+    .modal-body .btn-community {
+      margin-bottom: 5px;       
+    }
 
 
 

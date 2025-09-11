@@ -107,7 +107,7 @@
         "name": "Carlos",
         "city": "Nueva York, Estados Unidos",
         "email": "carlos@mail.com",
-        "role": "Postdoc",
+        "role": "Profesor",
         "lat": 40.7127281,
         "lon": -74.0060152
     },
@@ -115,7 +115,7 @@
         "name": "Carlos",
         "city": "Nueva York, Estados Unidos",
         "email": "carlos@mail.com",
-        "role": "Postdoc",
+        "role": "Investigador",
         "lat": 40.7127281,
         "lon": -74.0060152
     },
