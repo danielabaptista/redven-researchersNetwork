@@ -35,6 +35,7 @@ def sheet_to_json(input_file, output_file=None):
         "Nombre y Apellido": "name",
         "Ciudad y País": "city_country",
         "Email": "email",
+        "Universidad": "university",
         "Rol": "role"
     })
 
@@ -59,7 +60,7 @@ def sheet_to_json(input_file, output_file=None):
     df["city"] = df["city"] + (", " + df["country"]).where(df["country"] != "", "")
 
     # Keep only needed columns
-    df = df[["name", "city", "email", "role", "lat", "lon"]]
+    df = df[["name", "city", "email", "university", "role", "lat", "lon"]]
 
     # Convert to JSON
     data = df.to_dict(orient="records")

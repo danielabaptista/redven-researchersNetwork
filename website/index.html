@@ -37,7 +37,7 @@
 <!-- Map and Metrics -->
 <div class="d-flex" style="margin: 15px 10px;">
   <!-- Left metrics panel -->
-  <div id="metrics-left" class="me-2" style="width: 250px;">
+  <div id="metrics-left" class="me-2" style="width: 300px;">
     <div class="card p-2 mb-2" id="totalResearchersCard">
       <h6>Total Investigadores</h6>
       <span id="totalResearchers">0</span>
@@ -47,13 +47,21 @@
       <h6>Por rol</h6>
       <div id="rolesMetrics" class="d-flex flex-wrap gap-3 justify-content-center"></div>
     </div>
+
+    <div class="card p-2 mb-2">
+      <h6>Universidades</h6>
+      <div id="universitiesMetricsContainer" style="max-height: 200px; overflow-y: auto;">
+        <div id="universitiesMetrics" class="d-flex flex-wrap gap-3 justify-content-center"></div>
+      </div>
+    </div>
   </div>
+
 
   <!-- Map -->
   <div id="map" style="flex:1; min-height: 600px;"></div>
 
-<!-- Right metrics panel -->
- <div id="metrics-right" class="ms-2 d-flex flex-column gap-3" style="width: 250px;">
+  <!-- Right metrics panel -->
+ <div id="metrics-right" class="ms-2 d-flex flex-column gap-3" style="width: 300px;">
 
   <div class="card py-2 px-3 text-center">
     <h6 class="mb-1">Impacto en la Comunidad</h6>
@@ -306,7 +314,34 @@
     document.getElementById("rolesMetrics").innerHTML = html;
   }
 
-  // Load researchers
+    // Render univ
+  function renderUniversityCircles(counts, total) {
+    // Convert object to array and sort descending by count
+    const sortedUnis = Object.entries(counts)
+      .sort((a, b) => b[1].count - a[1].count);
+
+    let html = "";
+    sortedUnis.forEach(([uni, data]) => {
+      const percent = (data.count / total) * 100;
+      html += `
+        <div class="role-circle" title="${data.fullName}">
+          <svg width="60" height="60">
+            <circle cx="30" cy="30" r="28" stroke="#ddd" stroke-width="4" fill="none" />
+            <circle cx="30" cy="30" r="28" stroke="#1565C0" stroke-width="4" fill="none"
+                    stroke-dasharray="${2 * Math.PI * 28}"
+                    stroke-dashoffset="${2 * Math.PI * 28 * (1 - percent/100)}"
+                    stroke-linecap="round" transform="rotate(-90 30 30)" />
+            <text x="30" y="35" text-anchor="middle" font-size="12" fill="#000">${data.count}</text>
+          </svg>
+          <div class="role-label">${uni}</div>
+        </div>
+      `;
+    });
+
+    document.getElementById("universitiesMetrics").innerHTML = html;
+  }
+
+  // Load researchers info
   fetch("data/researchers.json")
     .then(res => res.json())
     .then(data => {
@@ -314,23 +349,32 @@
       document.getElementById("totalResearchers").innerText = data.length;
 
       const rolesCount = {};
+      const universitiesCount = {};
 
       data.forEach(r => {
         const role = r.role ? r.role.toLowerCase() : "otros";
         const icon = roleIcons[role] || roleIcons["otros"];
 
         const marker = L.marker([r.lat, r.lon], { icon: icon })
-          .bindPopup(`<b>${r.name}</b><br>${r.city}<br>${r.role}<br><a href="mailto:${r.email}">${r.email}</a>`);
+          .bindPopup(`<b>${r.name}</b><br>${r.uni_acronym}<br>${r.city}<br>${r.role}<br><a href="mailto:${r.email}">${r.email}</a>`);
 
         markers.addLayer(marker);
 
         rolesCount[role] = (rolesCount[role] || 0) + 1;
+
+        if (r.uni_acronym && r.university) {
+          if (!universitiesCount[r.uni_acronym]) {
+            universitiesCount[r.uni_acronym] = { fullName: r.university, count: 0 };
+          }
+          universitiesCount[r.uni_acronym].count++;
+        }
       });
 
       map.addLayer(markers);
 
-      // Render the roles as circles
+      // Render the roles and uni as circles
       renderRoleCircles(rolesCount, data.length);
+      renderUniversityCircles(universitiesCount, data.length);
     });
 
   // Load projects
@@ -396,8 +440,6 @@
   fetch("data/community.json")
     .then(res => res.json())
     .then(data => {
-      // Assuming your JSON looks like:
-      // { "mentorships": 12, "papers": 34, "donations": 1500 }
 
       document.getElementById("mentorships").innerText = data.mentorships;
       document.getElementById("studentsMentored").innerText = data.students_mentored;

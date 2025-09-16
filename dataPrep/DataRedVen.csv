@@ -1,15 +1,15 @@
-Nombre y Apellido,Ciudad y País,Email,Rol
-Carlos,"Caracas, Venezuela",carlos@mail.com,Maestría
-Juan,"Paris, Francia",juan@mail.com,Investigador
-Ana,"Santiago, Chile",ana@mail.com,Postdoc
-María,"Stuttgart, Alemania",maria@mail.com,Doctorado
-José,"Stuttgart, Alemania",jose@mail.com,Otro
-Natalia,"Mérida, Venezuela",natalia@mail.com,Profesor
-Jorge,"Ciudad de México, México",jorge@mail.com,Doctorado
-Oscar,"Ciudad del Cabo, Sudafrica",oscar@mail.com,Profesor
-Clara,"Tokyo, Japón",clara@mail.com,Maestría
-Eduardo,"Caracas, Venezuela",eduardo@mail.com,Otro
-Juan,"Santiago de Chile, Chile",juan@mail.com,Postdoc
-Belén,"Valencia, España",belen@mail.com,Investigador
-Diego,"Buenos Aires, Argentina",diego@mail.com,Investigador
-Carlos,"Nueva York, Estados Unidos",carlos@mail.com,Postdoc
+Nombre y Apellido,Ciudad y País,Email,Universidad,Rol
+Carlos,"Caracas, Venezuela",carlos@mail.com,Universidad de Los Andes,Maestría
+Juan,"Paris, Francia",juan@mail.com,Universidad Simón Bolívar,Investigador
+Ana,"Santiago, Chile",ana@mail.com,Universidad de Los Andes,Postdoc
+María,"Stuttgart, Alemania",maria@mail.com,Universidad Central de Venezuela,Doctorado
+José,"Stuttgart, Alemania",jose@mail.com,Universidad Central de Venezuela,Otro
+Natalia,"Mérida, Venezuela",natalia@mail.com,Universidad de Carabobo,Profesor
+Jorge,"Ciudad de México, México",jorge@mail.com,Universidad Central de Venezuela,Doctorado
+Oscar,"Ciudad del Cabo, Sudafrica",oscar@mail.com,Universidad de Carabobo,Profesor
+Clara,"Tokyo, Japón",clara@mail.com,Universidad de Los Andes,Maestría
+Eduardo,"Caracas, Venezuela",eduardo@mail.com,Universidad de Los Andes,Otro
+Juan,"Santiago de Chile, Chile",juan@mail.com,Universidad de Carabobo,Postdoc
+Belén,"Valencia, España",belen@mail.com,Universidad de Carabobo,Investigador
+Diego,"Buenos Aires, Argentina",diego@mail.com,Universidad de Los Andes,Investigador
+Carlos,"Nueva York, Estados Unidos",carlos@mail.com,Universidad Simón Bolívar,Postdoc
