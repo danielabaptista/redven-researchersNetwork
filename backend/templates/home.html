@@ -345,12 +345,14 @@
     .then(res => res.json())
     .then(data => {
       const markers = L.markerClusterGroup();
-      document.getElementById("totalResearchers").innerText = data.length;
+
+      const approvedUsers = data.filter(u => u.approved);
+      document.getElementById("totalResearchers").innerText = approvedUsers.length;
 
       const rolesCount = {};
       const universitiesCount = {};
 
-      data.forEach(r => {
+      approvedUsers.forEach(r => {
         const role = r.role ? r.role.toLowerCase() : "otros";
         const icon = roleIcons[role] || roleIcons["otros"];
 
@@ -372,8 +374,8 @@
       map.addLayer(markers);
 
       // Render the roles and uni as circles
-      renderRoleCircles(rolesCount, data.length);
-      renderUniversityCircles(universitiesCount, data.length);
+      renderRoleCircles(rolesCount, approvedUsers.length);
+      renderUniversityCircles(universitiesCount, approvedUsers.length);
     });
 
   // Load projects

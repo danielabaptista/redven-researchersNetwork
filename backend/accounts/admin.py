@@ -3,9 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, StudentProfile, ResearcherProfile
 from .utils import export_users_to_json
 
-# ------------------------
 # CustomUser Admin
-# ------------------------
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('email', 'user_type', 'is_approved', 'is_staff', 'is_superuser')
@@ -26,16 +24,16 @@ class CustomUserAdmin(UserAdmin):
     actions = ["approve_users"]
 
     def approve_users(self, request, queryset):
-        queryset.update(is_approved=True)
-        export_users_to_json()
-        self.message_user(request, "Selected users approved.")
+       for user in queryset:
+           user.is_approved = True
+           user.save()  
+       self.message_user(request, "Selected users approved.")
+
 
     approve_users.short_description = "Approve selected users"
 
 
-# ------------------------
 # StudentProfile Admin
-# ------------------------
 @admin.register(StudentProfile)
 class StudentProfileAdmin(admin.ModelAdmin):
     list_display = ("full_name", "user", "approval_status")
@@ -52,9 +50,7 @@ class StudentProfileAdmin(admin.ModelAdmin):
         export_users_to_json()
 
 
-# ------------------------
 # ResearcherProfile Admin
-# ------------------------
 @admin.register(ResearcherProfile)
 class ResearcherProfileAdmin(admin.ModelAdmin):
     list_display = ("full_name", "user", "role", "approval_status")
@@ -71,7 +67,5 @@ class ResearcherProfileAdmin(admin.ModelAdmin):
         export_users_to_json()
 
 
-# ------------------------
 # Register CustomUser
-# ------------------------
 admin.site.register(CustomUser, CustomUserAdmin)
