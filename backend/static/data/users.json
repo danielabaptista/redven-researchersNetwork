@@ -1,1 +1,46 @@
-[]
+[
+    {
+        "name": "Maria",
+        "city": "Mérida, Venezuela",
+        "email": "maria@mail.com",
+        "university": "ULA",
+        "uni_acronym": "ULA",
+        "role": "Estudiante",
+        "lat": 8.5816963,
+        "lon": -71.1658075,
+        "approved": false
+    },
+    {
+        "name": "MM",
+        "city": "merida, venezuela",
+        "email": "mm@mail.com",
+        "university": "ula",
+        "uni_acronym": "ula",
+        "role": "Estudiante",
+        "lat": 8.5816963,
+        "lon": -71.1658075,
+        "approved": false
+    },
+    {
+        "name": "DD",
+        "city": "Caracas, Venezuela",
+        "email": "dd@mail.com",
+        "university": "UCV",
+        "uni_acronym": "UCV",
+        "role": "Estudiante",
+        "lat": 10.5060934,
+        "lon": -66.9146008,
+        "approved": false
+    },
+    {
+        "name": "MD",
+        "city": "Paris, Francia",
+        "email": "md@mail.com",
+        "university": "ULA",
+        "uni_acronym": "ULA",
+        "role": "Profesor",
+        "lat": 48.8534951,
+        "lon": 2.3483915,
+        "approved": false
+    }
+]

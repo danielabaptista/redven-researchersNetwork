@@ -50,7 +50,7 @@ class CustomUserCreationForm(forms.ModelForm):
 
     def save(self):
         data = self.cleaned_data
-       # try:
+
         user = CustomUser.objects.create_user(
             email=data["email"],
             password=data["password1"],
@@ -60,18 +60,17 @@ class CustomUserCreationForm(forms.ModelForm):
         user.save()
 
         if data["user_type"] == "student":
-            StudentProfile.objects.create(
+            profile = StudentProfile.objects.create(
                 user=user,
                 full_name=data["full_name"],
                 city=data["city"],
                 country=data["country"],
                 university=data["university"],
                 bachelor_degree=data["bachelor_degree"],
+                approved=False  # profile field
             )
-            user.approved = False
-            user.save()
         else:
-            ResearcherProfile.objects.create(
+            profile = ResearcherProfile.objects.create(
                 user=user,
                 full_name=data["full_name"],
                 city=data["city"],
@@ -80,13 +79,14 @@ class CustomUserCreationForm(forms.ModelForm):
                 current_university=data["current_university"],
                 bachelor_degree=data["bachelor_degree"],
                 role=data["role"],
+                approved=False  # profile field
             )
-            user.approved = False
-            user.save()
+
+        # Call JSON export here if you want to update immediately
+        from .utils import export_users_to_json
+        export_users_to_json()
+
         return user
-        #except Exception as e:
-         #   print("Error saving user:", e)
-          #  return None
 
 
 

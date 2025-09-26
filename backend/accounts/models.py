@@ -52,6 +52,7 @@ class StudentProfile(models.Model):
     country = models.CharField(max_length=100)
     university = models.CharField(max_length=200)
     bachelor_degree = models.CharField(max_length=100)
+    approved = models.BooleanField(default=False) 
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
@@ -88,6 +89,7 @@ class ResearcherProfile(models.Model):
     current_university = models.CharField(max_length=200)
     bachelor_degree = models.CharField(max_length=100)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    approved = models.BooleanField(default=False) 
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 

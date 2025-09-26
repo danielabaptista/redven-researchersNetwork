@@ -4,7 +4,7 @@ from .models import CustomUser, StudentProfile, ResearcherProfile
 from .utils import export_users_to_json
 
 # ------------------------
-# CustomUser Admin (for all users)
+# CustomUser Admin
 # ------------------------
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -33,7 +33,9 @@ class CustomUserAdmin(UserAdmin):
     approve_users.short_description = "Approve selected users"
 
 
-# Student Profile Admin
+# ------------------------
+# StudentProfile Admin
+# ------------------------
 @admin.register(StudentProfile)
 class StudentProfileAdmin(admin.ModelAdmin):
     list_display = ("full_name", "user", "approval_status")
@@ -45,17 +47,14 @@ class StudentProfileAdmin(admin.ModelAdmin):
         return "Approved" if obj.user.is_approved else "Not approved yet"
     approval_status.short_description = "Profile Status"
 
-    def has_delete_permission(self, request, obj=None):
-        return False
-
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        # Call JSON export after saving (if approved)
-        if obj.user.is_approved:
-            export_users_to_json()
+        export_users_to_json()
 
 
-# Researcher Profile Admin
+# ------------------------
+# ResearcherProfile Admin
+# ------------------------
 @admin.register(ResearcherProfile)
 class ResearcherProfileAdmin(admin.ModelAdmin):
     list_display = ("full_name", "user", "role", "approval_status")
@@ -67,13 +66,9 @@ class ResearcherProfileAdmin(admin.ModelAdmin):
         return "Approved" if obj.user.is_approved else "Not approved yet"
     approval_status.short_description = "Profile Status"
 
-    def has_delete_permission(self, request, obj=None):
-        return False
-
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        if obj.user.is_approved:
-            export_users_to_json()
+        export_users_to_json()
 
 
 # ------------------------
