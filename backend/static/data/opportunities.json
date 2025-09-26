@@ -1,0 +1,30 @@
+[
+  {
+    "title": "PhD in Robotics",
+    "level": "PhD",
+    "topic": "Robotics",
+    "city": "Berlin",
+    "link": "https://example.com/opportunity1"
+  },
+  {
+    "title": "Summer Internship AI",
+    "level": "Internship",
+    "topic": "Artificial Intelligence",
+    "city": "Paris",
+    "link": "https://example.com/opportunity2"
+  },
+  {
+    "title": "PhD in Robotics",
+    "level": "PhD",
+    "topic": "Robotics",
+    "city": "Berlin",
+    "link": "https://example.com/opportunity1"
+  },
+  {
+    "title": "Summer Internship AI",
+    "level": "Internship",
+    "topic": "Artificial Intelligence",
+    "city": "Paris",
+    "link": "https://example.com/opportunity2"
+  }
+]

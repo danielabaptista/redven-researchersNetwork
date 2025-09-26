@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Registro</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <!-- Email -->
+        <div class="form-group">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </div>
+
+        <!-- User Type -->
+        <div class="form-group">
+            {{ form.user_type.label_tag }}
+            <div class="radio-group">
+                {% for radio in form.user_type %}
+                    <label>
+                        {{ radio.tag }} {{ radio.choice_label }}
+                    </label>
+                {% endfor %}
+            </div>
+            {{ form.user_type.errors }}
+        </div>
+
+        <!-- Student Fields -->
+        <div id="student-fields" style="display:none;">
+            <div class="form-group">{{ form.full_name.label_tag }} {{ form.full_name }} {{ form.full_name.errors }}</div>
+            <div class="form-group">{{ form.city.label_tag }} {{ form.city }} {{ form.city.errors }}</div>
+            <div class="form-group">{{ form.country.label_tag }} {{ form.country }} {{ form.country.errors }}</div>
+            <div class="form-group">{{ form.university.label_tag }} {{ form.university }} {{ form.university.errors }}</div>
+            <div class="form-group">{{ form.bachelor_degree.label_tag }} {{ form.bachelor_degree }} {{ form.bachelor_degree.errors }}</div>
+        </div>
+
+        <!-- Researcher Fields -->
+        <div id="researcher-fields" style="display:none;">
+            <div class="form-group">{{ form.full_name.label_tag }} {{ form.full_name }} {{ form.full_name.errors }}</div>
+            <div class="form-group">{{ form.city.label_tag }} {{ form.city }} {{ form.city.errors }}</div>
+            <div class="form-group">{{ form.country.label_tag }} {{ form.country }} {{ form.country.errors }}</div>
+            <div class="form-group">{{ form.alma_mater.label_tag }} {{ form.alma_mater }} {{ form.alma_mater.errors }}</div>
+            <div class="form-group">{{ form.current_university.label_tag }} {{ form.current_university }} {{ form.current_university.errors }}</div>
+            <div class="form-group">{{ form.bachelor_degree.label_tag }} {{ form.bachelor_degree }} {{ form.bachelor_degree.errors }}</div>
+            <div class="form-group">{{ form.role.label_tag }} {{ form.role }} {{ form.role.errors }}</div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn-submit">Register</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const studentFields = document.getElementById("student-fields");
+    const researcherFields = document.getElementById("researcher-fields");
+
+    function toggleFields(value) {
+        if (value === "student") {
+            studentFields.style.display = "block";
+            researcherFields.style.display = "none";
+            enableFields(studentFields);
+            disableFields(researcherFields);
+        } else if (value === "researcher") {
+            studentFields.style.display = "none";
+            researcherFields.style.display = "block";
+            disableFields(studentFields);
+            enableFields(researcherFields);
+        } else {
+            studentFields.style.display = "none";
+            researcherFields.style.display = "none";
+            disableFields(studentFields);
+            disableFields(researcherFields);
+        }
+    }
+
+    function disableFields(container) {
+        container.querySelectorAll("input, select").forEach(f => f.disabled = true);
+    }
+
+    function enableFields(container) {
+        container.querySelectorAll("input, select").forEach(f => f.disabled = false);
+    }
+
+    const radios = document.querySelectorAll("input[name='user_type']");
+    radios.forEach(radio => {
+        radio.addEventListener("change", function() {
+            toggleFields(this.value);
+        });
+        if (radio.checked) toggleFields(radio.value);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Investigadores Venezolanos en el Mundo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.min.js"></script>
+</head>
+<body>
+
+
+<!-- Map and Metrics -->
+<div class="d-flex" style="margin: 15px 10px;">
+  <!-- Left metrics panel -->
+  <div id="metrics-left" class="me-2" style="width: 300px;">
+    <div class="card p-2 mb-2" id="totalResearchersCard">
+      <h6>Total Investigadores</h6>
+      <span id="totalResearchers">0</span>
+    </div>
+
+    <div class="card p-2 mb-2">
+      <h6>Por rol</h6>
+      <div id="rolesMetrics" class="d-flex flex-wrap gap-3 justify-content-center"></div>
+    </div>
+
+    <div class="card p-2 mb-2">
+      <h6>Universidades</h6>
+      <div id="universitiesMetricsContainer" style="max-height: 200px; overflow-y: auto;">
+        <div id="universitiesMetrics" class="d-flex flex-wrap gap-3 justify-content-center"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Map -->
+  <div id="map" style="flex:1; min-height: 600px;"></div>
+
+  <!-- Right metrics panel -->
+ <div id="metrics-right" class="ms-2 d-flex flex-column gap-3" style="width: 300px;">
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Impacto en la Comunidad</h6>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Mentores</h6>
+    <p id="mentorships" class="fs-4 fw-bold counter mb-0">0</p>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Estudiantes Mentorados</h6>
+    <p id="studentsMentored" class="fs-4 fw-bold counter mb-0">0</p>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Papers Compartidos</h6>
+    <p id="papersShared" class="fs-4 fw-bold counter mb-0">0</p>
+  </div>
+
+  <div class="card py-2 px-3 text-center">
+    <h6 class="mb-1">Donaciones Recibidas</h6>
+    <p id="donations" class="fs-4 fw-bold counter mb-0">0</p>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#donationsModal" class="small">
+      ¿Cómo usamos estas donaciones?
+    </a>
+  </div>
+
+</div>
+
+</div>
+
+
+
+<!-- Projects Modal -->
+<div class="modal fade" id="projectsModal" tabindex="-1" aria-labelledby="projectsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="projectsModalLabel">Proyectos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="projectsModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Opportunities Modal -->
+<div class="modal fade" id="opportunitiesModal" tabindex="-1" aria-labelledby="opportunitiesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="opportunitiesModalLabel">Oportunidades</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="opportunitiesModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Courses Modal -->
+<div class="modal fade" id="coursesModal" tabindex="-1" aria-labelledby="coursesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="coursesModalLabel">Cursos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="coursesModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- About Us Modal -->
+<div class="modal fade" id="aboutUsModal" tabindex="-1" aria-labelledby="aboutUsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aboutUsModalLabel">Sobre Nosotros</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Somos una comunidad de investigadores venezolanos en todo el mundo. 
+          Nuestro objetivo es conectar, colaborar y compartir oportunidades para fortalecer 
+          la investigación y la innovación.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Donations Modal -->
+<div class="modal fade" id="donationsModal" tabindex="-1" aria-labelledby="donationsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="donationsModalLabel">Uso de las Donaciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Las donaciones recibidas se utilizan para apoyar el crecimiento de la comunidad de estudiantes en Venezuela que quieren dedicarse a la investigación.</p>
+        <ul>
+          <li><b>Becas y mentorías:</b> apoyar a estudiantes con acceso a recursos y orientación.</li>
+          <li><b>Eventos y talleres:</b> organización de actividades de networking y capacitación.</li>
+        </ul>
+        <p>Tu contribución ayuda a mantener vivo este proyecto y a fortalecer la red de investigadores venezolanos.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Registration Modal (google forms links) -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registrationModalLabel">Participa en la Comunidad</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-flex flex-column gap-3">
+        <p class="mb-4">
+          Ayúdanos a recolectar información para fortalecer la comunidad.  
+          Rellena el formulario según tu caso:
+        </p>
+        <a href="YOUR_REGISTRATION_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Quieres registrarte en la comunidad y que tu información aparezca en el mapa?
+        </a>
+        <a href="YOUR_MENTORSHIP_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Estás dando mentoría a alguien de la comunidad?
+        </a>
+        <a href="YOUR_STUDENT_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Estás recibiendo mentoría de alguien de la comunidad?
+        </a>
+        <a href="YOUR_PAPER_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Has compatidos un paper con la comunidad?
+        </a>
+        <a href="YOUR_DONATION_FORM_LINK" target="_blank" class="btn btn-community">
+          ¿Quieres apoyar con una donación? <br>
+        </a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+<script>
+  // Initialize map
+  const map = L.map('map', { minZoom: 2 }).setView([20,0], 2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 19,
+    noWrap: true
+  }).addTo(map);
+
+  map.setMaxBounds([[-60,-170],[80,170]]);
+
+  // Define role icons
+  const roleIcons = {
+    "maestría": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "doctorado": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "postdoc": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "profesor": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "investigador": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+    "otro": new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    })
+  };
+
+  // Helper to capitalize first letter
+  function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  // Render roles as circles
+  function renderRoleCircles(counts, total) {
+    const roleColors = {
+      "maestría": "#2AAD27",   // green
+      "doctorado": "#2A81CB",  // blue
+      "postdoc": "#9C2BCB",    // violet
+      "profesor": "#CB2B3E",   // red
+      "investigador": "#CB8427", // orange
+      "otro": "#7B7B7B"       // grey
+    };
+
+    let html = "";
+    for (const [role, count] of Object.entries(counts)) {
+      const percent = (count / total) * 100;
+      const color = roleColors[role] || "#007bff";
+      html += `
+        <div class="role-circle">
+          <svg width="60" height="60">
+            <circle cx="30" cy="30" r="28" stroke="#ddd" stroke-width="4" fill="none" />
+            <circle cx="30" cy="30" r="28" stroke="${color}" stroke-width="4" fill="none"
+                    stroke-dasharray="${2 * Math.PI * 28}"
+                    stroke-dashoffset="${2 * Math.PI * 28 * (1 - percent/100)}"
+                    stroke-linecap="round" transform="rotate(-90 30 30)" />
+            <text x="30" y="35" text-anchor="middle" font-size="14" fill="#000">${count}</text>
+          </svg>
+          <div class="role-label">${capitalizeFirst(role)}</div>
+        </div>
+      `;
+    }
+    document.getElementById("rolesMetrics").innerHTML = html;
+  }
+
+    // Render univ
+  function renderUniversityCircles(counts, total) {
+    // Convert object to array and sort descending by count
+    const sortedUnis = Object.entries(counts)
+      .sort((a, b) => b[1].count - a[1].count);
+
+    let html = "";
+    sortedUnis.forEach(([uni, data]) => {
+      const percent = (data.count / total) * 100;
+      html += `
+        <div class="role-circle" title="${data.fullName}">
+          <svg width="60" height="60">
+            <circle cx="30" cy="30" r="28" stroke="#ddd" stroke-width="4" fill="none" />
+            <circle cx="30" cy="30" r="28" stroke="#1565C0" stroke-width="4" fill="none"
+                    stroke-dasharray="${2 * Math.PI * 28}"
+                    stroke-dashoffset="${2 * Math.PI * 28 * (1 - percent/100)}"
+                    stroke-linecap="round" transform="rotate(-90 30 30)" />
+            <text x="30" y="35" text-anchor="middle" font-size="12" fill="#000">${data.count}</text>
+          </svg>
+          <div class="role-label">${uni}</div>
+        </div>
+      `;
+    });
+
+    document.getElementById("universitiesMetrics").innerHTML = html;
+  }
+
+  // Load researchers info
+  //fetch("{% static 'data/researchers.json' %}")
+  fetch("/static/data/users.json")
+    .then(res => res.json())
+    .then(data => {
+      const markers = L.markerClusterGroup();
+      document.getElementById("totalResearchers").innerText = data.length;
+
+      const rolesCount = {};
+      const universitiesCount = {};
+
+      data.forEach(r => {
+        const role = r.role ? r.role.toLowerCase() : "otros";
+        const icon = roleIcons[role] || roleIcons["otros"];
+
+        const marker = L.marker([r.lat, r.lon], { icon: icon })
+          .bindPopup(`<b>${r.name}</b><br>${r.uni_acronym}<br>${r.city}<br>${r.role}<br><a href="mailto:${r.email}">${r.email}</a>`);
+
+        markers.addLayer(marker);
+
+        rolesCount[role] = (rolesCount[role] || 0) + 1;
+
+        if (r.uni_acronym && r.university) {
+          if (!universitiesCount[r.uni_acronym]) {
+            universitiesCount[r.uni_acronym] = { fullName: r.university, count: 0 };
+          }
+          universitiesCount[r.uni_acronym].count++;
+        }
+      });
+
+      map.addLayer(markers);
+
+      // Render the roles and uni as circles
+      renderRoleCircles(rolesCount, data.length);
+      renderUniversityCircles(universitiesCount, data.length);
+    });
+
+  // Load projects
+  fetch("{% static 'data/projects.json' %}")
+    .then(res => res.json())
+    .then(data => {
+      const projectsModalBody = document.getElementById("projectsModalBody");
+      data.forEach(p => {
+        projectsModalBody.innerHTML += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">${p.title}</h5>
+              <p><b>Autor:</b> ${p.author}</p>
+              <p><b>Año:</b> ${p.year}</p>
+              <p><b>Revista:</b> ${p.magazin}</p>
+              <p><b>Link:</b> <a href="${p.link}" target="_blank">${p.link}</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+  // Load opportunities
+  fetch("{% static 'data/opportunities.json' %}")
+    .then(res => res.json())
+    .then(data => {
+      const opportunitiesModalBody = document.getElementById("opportunitiesModalBody");
+      data.forEach(o => {
+        opportunitiesModalBody.innerHTML += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">${o.title}</h5>
+              <p><b>Nivel:</b> ${o.level}</p>
+              <p><b>Tema:</b> ${o.topic}</p>
+              <p><b>Ciudad:</b> ${o.city}</p>
+              <p><b>Link:</b> <a href="${o.link}" target="_blank">${o.link}</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+  // Load courses
+  fetch("{% static 'data/courses.json' %}")
+    .then(res => res.json())
+    .then(data => {
+      const opportunitiesModalBody = document.getElementById("coursesModalBody");
+      data.forEach(o => {
+        coursesModalBody.innerHTML += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">${o.title}</h5>
+              <p><b>Fecha:</b> ${o.date}</p>
+              <p><b>Hora:</b> ${o.time}</p>
+              <p><b>Link:</b> <a href="${o.link}" target="_blank">${o.link}</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+  // Load community impact data
+  fetch("{% static 'data/community.json' %}")
+    .then(res => res.json())
+    .then(data => {
+
+      document.getElementById("mentorships").innerText = data.mentorships;
+      document.getElementById("studentsMentored").innerText = data.students_mentored;
+      document.getElementById("papersShared").innerText = data.papers_shared;
+      document.getElementById("donations").innerText = `$${data.donations.toLocaleString()}`;
+  });
+
+  // Open modals on navbar click
+  document.getElementById("projectsBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("projectsModal")).show();
+  });
+  document.getElementById("opportunitiesBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("opportunitiesModal")).show();
+  });
+    document.getElementById("coursesBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("coursesModal")).show();
+  });
+  document.getElementById("aboutUsBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("aboutUsModal")).show();
+  });
+    document.getElementById("registrationBtn").addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("registrationModal")).show();
+  });
+
+</script>
+
+</body>
+</html>
+
+{% endblock %}

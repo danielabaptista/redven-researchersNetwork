@@ -1,0 +1,162 @@
+[
+    {
+        "name": "Carlos",
+        "city": "Caracas, Venezuela",
+        "email": "carlos@mail.com",
+        "university": "Univ. Central de Venezuela",
+        "uni_acronym": "UCV",
+        "role": "Maestría",
+        "lat": 10.5060934,
+        "lon": -66.9146008
+    },
+    {
+        "name": "Juan",
+        "city": "Paris, Francia",
+        "email": "juan@mail.com",
+        "university": "Univ. Central de Venezuela",
+        "uni_acronym": "UCV",
+        "role": "Investigador",
+        "lat": 48.8534951,
+        "lon": 2.3483915
+    },
+    {
+        "name": "Ana",
+        "city": "Santiago, Chile",
+        "email": "ana@mail.com",
+        "university": "Univ. de Los Andes",
+        "uni_acronym": "ULA",
+        "role": "Postdoc",
+        "lat": -33.4377756,
+        "lon": -70.6504502
+    },
+    {
+        "name": "María",
+        "city": "Stuttgart, Alemania",
+        "email": "maria@mail.com",
+        "university": "Univ. Simón Bolívar",
+        "uni_acronym": "USB",
+        "role": "Doctorado",
+        "lat": 48.7784485,
+        "lon": 9.1800132
+    },
+    {
+        "name": "José",
+        "city": "Stuttgart, Alemania",
+        "email": "jose@mail.com",
+        "university": "Univ. de Los Andes",
+        "uni_acronym": "ULA",
+        "role": "Otro",
+        "lat": 48.7784485,
+        "lon": 9.1800132
+    },
+    {
+        "name": "Natalia",
+        "city": "Mérida, Venezuela",
+        "email": "natalia@mail.com",
+        "university": "Univ. de Los Andes",
+        "uni_acronym": "ULA",
+        "role": "Profesor",
+        "lat": 8.5816963,
+        "lon": -71.1658075
+    },
+    {
+        "name": "Jorge",
+        "city": "Ciudad de México, México",
+        "email": "jorge@mail.com",
+        "university": "Universidad del Zulia",
+        "uni_acronym": "LUZ",
+        "role": "Doctorado",
+        "lat": 19.3207722,
+        "lon": -99.1514678
+    },
+    {
+        "name": "Oscar",
+        "city": "Ciudad del Cabo, Sudafrica",
+        "email": "oscar@mail.com",
+        "university":"Univ. Centro Occidental Luis Alvarado",
+        "uni_acronym": "UCLA",
+        "role": "Profesor",
+        "lat": -33.9288301,
+        "lon": 18.4172197
+    },
+    {
+        "name": "Clara",
+        "city": "Tokyo, Japón",
+        "email": "clara@mail.com",
+        "university":"Univ. Centro Occidental Luis Alvarado",
+        "uni_acronym": "UCLA",
+        "role": "Maestría",
+        "lat": 35.6768601,
+        "lon": 139.7638947
+    },
+    {
+        "name": "Eduardo",
+        "city": "Caracas, Venezuela",
+        "email": "eduardo@mail.com",
+        "university":"Univ. Centro Occidental Luis Alvarado",
+        "uni_acronym": "UCLA",
+        "role": "Otro",
+        "lat": 10.5060934,
+        "lon": -66.9146008
+    },
+    {
+        "name": "Juan",
+        "city": "Santiago de Chile, Chile",
+        "email": "juan@mail.com",
+        "university": "Univ. de Los Andes",
+        "uni_acronym": "ULA",
+        "role": "Postdoc",
+        "lat": -33.4377756,
+        "lon": -70.6504502
+    },
+    {
+        "name": "Belén",
+        "city": "Valencia, España",
+        "email": "belen@mail.com",
+        "university": "Universidad del Zulia",
+        "uni_acronym": "LUZ",
+        "role": "Investigador",
+        "lat": 39.4697065,
+        "lon": -0.3763353
+    },
+    {
+        "name": "Diego",
+        "city": "Buenos Aires, Argentina",
+        "email": "diego@mail.com",
+        "university": "Univ. de Los Andes",
+        "uni_acronym": "ULA",
+        "role": "Investigador",
+        "lat": -34.6083696,
+        "lon": -58.4440583
+    },
+    {
+        "name": "Carlos",
+        "city": "Nueva York, Estados Unidos",
+        "email": "carlos@mail.com",
+        "university": "Universidad de Carabobo",
+        "uni_acronym": "UC",
+        "role": "Profesor",
+        "lat": 40.7127281,
+        "lon": -74.0060152
+    },
+    {
+        "name": "Carlos",
+        "city": "Nueva York, Estados Unidos",
+        "email": "carlos@mail.com",
+        "university": "Universidad de Carabobo",
+        "uni_acronym": "UC",
+        "role": "Investigador",
+        "lat": 40.7127281,
+        "lon": -74.0060152
+    },
+    {
+        "name": "Carlos",
+        "city": "Nueva York, Estados Unidos",
+        "email": "carlos@mail.com",
+        "university": "Universidad de Oriente",
+        "uni_acronym": "UDO",
+        "role": "Postdoc",
+        "lat": 40.7127281,
+        "lon": -74.0060152
+    }
+]
