@@ -14,22 +14,18 @@
       <a class="navbar-brand" href="{% url 'home' %}">Investigadores Venezolanos en el Mundo</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="#" id="projectsBtn">Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#" id="opportunitiesBtn">Oportunidades</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#" id="coursesBtn">Cursos</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#" id="aboutUsBtn">Sobre nosotros</a></li>
 
           {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'logout' %}">Cerrar sesión</a>
+            <li class="nav-item"><a class="nav-link active" href="#" id="projectsBtn">Proyectos</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#" id="opportunitiesBtn">Oportunidades</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#" id="coursesBtn">Cursos</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#" id="aboutUsBtn">Sobre nosotros</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'logout' %}">Cerrar sesión</a>
             </li>
           {% else %}
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'login' %}">Iniciar sesión</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'register' %}">Registrarme</a>
-            </li>
+            <li class="nav-item"><a class="nav-link active" href="#" id="aboutUsBtn">Sobre nosotros</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'login' %}">Iniciar sesión</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'register' %}">Registrarme</a></li>
           {% endif %}
         </ul>
       </div>

@@ -77,10 +77,29 @@
   <div class="card py-2 px-3 text-center">
     <h6 class="mb-1">Donaciones Recibidas</h6>
     <p id="donations" class="fs-4 fw-bold counter mb-0">0</p>
-    <a href="#" data-bs-toggle="modal" data-bs-target="#donationsModal" class="small">
-      ¿Cómo usamos estas donaciones?
-    </a>
+
+    {% if user.is_authenticated %}
+      <a href="#" data-bs-toggle="modal" data-bs-target="#donationsModal" class="small">
+        ¿Cómo usamos estas donaciones?
+      </a>
+    {% else %}
+      <a href="#" class="small" id="donationsPopup" 
+        data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" 
+        data-bs-content='<a href="{% url "login" %}">Inicia sesión</a> para ver más <br> información sobre nuestras donaciones.'>
+        ¿Cómo usamos estas donaciones?
+      </a>
+    {% endif %}
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var popoverTrigger = document.getElementById('donationsPopup');
+      if(popoverTrigger) {
+        new bootstrap.Popover(popoverTrigger);
+      }
+    });
+  </script>
+
 
 </div>
 
@@ -225,6 +244,11 @@
 <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
 <script>
+  const isLoggedIn = "{{ request.user.is_authenticated|yesno:'true,false' }}" === "true";
+</script>
+
+<script>
+  
   // Initialize map
   const map = L.map('map', { minZoom: 2 }).setView([20,0], 2);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -288,7 +312,7 @@
       "profesor": "#CB2B3E",   // red
       "investigador": "#CB8427", // orange
       "otro": "#7B7B7B",       // grey
-      "estudiante" : "FFD326"  // yellow
+      "estudiante" : "#FFD326"  // yellow
     };
 
     let html = "";
@@ -356,8 +380,12 @@
         const role = r.role ? r.role.toLowerCase() : "otros";
         const icon = roleIcons[role] || roleIcons["otros"];
 
-        const marker = L.marker([r.lat, r.lon], { icon: icon })
-          .bindPopup(`<b>${r.name}</b><br>${r.uni_acronym}<br>${r.city}<br>${r.role}<br><a href="mailto:${r.email}">${r.email}</a>`);
+        const popupContent = isLoggedIn
+          ? `<b>${r.name}</b><br>${r.uni_acronym}<br>${r.city}<br>${r.role}<br><a href="mailto:${r.email}">${r.email}</a>`
+          : `<a href="{% url 'login' %}">Inicia sesión para ver detalles</a>`;
+
+          const marker = L.marker([r.lat, r.lon], { icon: icon })
+            .bindPopup(popupContent);
 
         markers.addLayer(marker);
 

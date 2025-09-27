@@ -22,7 +22,11 @@
       {{ form.password.errors }}
     </div>
 
-    <button type="submit">Login</button>
+    <p class="mb-2">
+      ¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a>
+    </p>
+
+    <button type="submit">Iniciar Sesión</button>
   </form>
 </div>
 
